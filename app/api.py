@@ -55,9 +55,7 @@ async def extract_entities(body: RecordsRequest = Body(..., example=example_requ
     doc = ruler(nlp(raw_body))
 
     res.update({"recordId": body.values[0].recordId})
-    res.update({"data": {"entities": [{ent.label_: ent.text} for ent in doc.ents]}})
-    res.update({"errors": [{"message": "None"}]})
-    res.update({"warnings": [{"message": "None"}]})
+    res.update({"data": {"skills": [ent.label_[6:] for ent in doc.ents if ent.label_.startswith("SKILL|")]}})
       
     return {"values": [res]}
 

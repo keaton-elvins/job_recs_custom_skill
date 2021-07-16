@@ -29,7 +29,6 @@ ENT_PROP_MAP = {
 
 class RecordDataRequest(BaseModel):
     text: str
-    language: str = "en"
 
 
 class RecordRequest(BaseModel):
@@ -42,7 +41,7 @@ class RecordsRequest(BaseModel):
 
 
 class RecordDataResponse(BaseModel):
-    entities: List
+    skills: List
 
 
 class Message(BaseModel):
@@ -52,8 +51,6 @@ class Message(BaseModel):
 class RecordResponse(BaseModel):
     recordId: str
     data: RecordDataResponse
-    errors: Optional[List[Message]]
-    warnings: Optional[List[Message]]
 
 
 class RecordsResponse(BaseModel):
