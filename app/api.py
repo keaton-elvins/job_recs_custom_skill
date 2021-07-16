@@ -19,6 +19,7 @@ from app.models import (
     RecordsEntitiesByTypeResponse,
 )
 from app.spacy_extractor import SpacyExtractor
+from spacy.pipeline import EntityRuler
 
 
 load_dotenv(find_dotenv())
@@ -36,6 +37,7 @@ example_request = srsly.read_json("app/data/example_request.json")
 
 nlp = spacy.load("en_core_web_sm")
 extractor = SpacyExtractor(nlp)
+ruler = EntityRuler(nlp, overwrite_ents=True).from_disk("app/data/patterns.jsonl")
 
 
 @app.get("/", include_in_schema=False)
@@ -46,21 +48,18 @@ def docs_redirect():
 @app.post("/entities", response_model=RecordsResponse, tags=["NER"])
 async def extract_entities(body: RecordsRequest = Body(..., example=example_request)):
     """Extract Named Entities from a batch of Records."""
+    
+    res = {}
 
-    res = []
-    documents = []
+    raw_body = body.values[0].data.text
+    doc = ruler(nlp(raw_body))
 
-    for val in body.values:
-        documents.append({"id": val.recordId, "text": val.data.text})
-
-    entities_res = extractor.extract_entities(documents)
-
-    res = [
-        {"recordId": er["id"], "data": {"entities": er["entities"]}}
-        for er in entities_res
-    ]
-
-    return {"values": res}
+    res.update({"recordId": body.values[0].recordId})
+    res.update({"data": {"entities": [{ent.label_: ent.text} for ent in doc.ents]}})
+    res.update({"errors": [{"message": "None"}]})
+    res.update({"warnings": [{"message": "None"}]})
+      
+    return {"values": [res]}
 
 
 @app.post(
@@ -68,9 +67,7 @@ async def extract_entities(body: RecordsRequest = Body(..., example=example_requ
 )
 async def extract_entities_by_type(body: RecordsRequest = Body(..., example=example_request)):
     """Extract Named Entities from a batch of Records separated by entity label.
-        This route can be used directly as a Cognitive Skill in Azure Search
-        For Documentation on integration with Azure Search, see here:
-        https://docs.microsoft.com/en-us/azure/search/cognitive-search-custom-skill-interface"""
+        This route can be used directly as a Cognitive Skill in Azure Search."""
 
     res = []
     documents = []
