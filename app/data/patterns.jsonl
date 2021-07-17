@@ -1393,6 +1393,7 @@
 {"label":"SKILL|object-model","pattern":[{"LOWER":"object"},{"LOWER":"model"}]}
 {"label":"SKILL|object-oriented-programming","pattern":[{"LOWER":"object-oriented"},{"LOWER":"programming"}]}
 {"label":"SKILL|object-oriented-programming","pattern":[{"LOWER":"object"},{"LOWER":"oriented programming"}]}
+{"label":"SKILL|object-oriented-programming","pattern":[{"LOWER":"oop"}]}
 {"label":"SKILL|object-relational-mapper-orm","pattern":[{"LOWER":"object"},{"LOWER":"relational"},{"LOWER":"mapper"},{"LOWER":"(orm)"}]}
 {"label":"SKILL|objective-c","pattern":[{"LOWER":"objective-c"}]}
 {"label":"SKILL|objective-c","pattern":[{"LOWER":"objective"},{"LOWER":"c"}]}
