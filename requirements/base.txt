@@ -6,3 +6,4 @@ python-dotenv==0.10.3
 pytest==5.2.1
 pytest-cov==2.8.1
 black==19.3b0
+beautifulsoup4==4.9.3
