@@ -5,14 +5,14 @@ from requests.api import get
 import spacy
 from spacy.pipeline import EntityRuler
 
-def get_skills(tag=str):
-    link = "https://www.indeed.com" + tag
+def get_skills(link=str):
     page = requests.get(link)
 
     soup = BeautifulSoup(page.content, "html.parser")
     description = soup.find(id='jobDescriptionText')
 
     text_chunks = description.find_all(text=True)
+    
     text = " ".join(text_chunks).strip('\n')
 
     doc = ruler(nlp(text))
@@ -29,7 +29,7 @@ URL = "https://www.indeed.com/jobs?q=software+engineer&limit=50&start="
 
 jobs_list = []
 
-for i in range(0, 50, 50):
+for i in range(0, 500, 50):
     page = requests.get(URL + str(i))
 
     soup = BeautifulSoup(page.content, "html.parser")
@@ -38,7 +38,7 @@ for i in range(0, 50, 50):
     job_results = job_soup.find_all('a', class_="tapItem")
 
     for result in job_results:
-        link = result.get('href').strip()
+        link = "https://www.indeed.com" + result.get('href').strip()
         
         if not link.startswith("/pagead"):
             job_entry = {}
