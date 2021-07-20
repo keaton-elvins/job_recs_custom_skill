@@ -16,9 +16,7 @@ from app.models import (
     ENT_PROP_MAP,
     RecordsRequest,
     RecordsResponse,
-    RecordsEntitiesByTypeResponse,
 )
-from app.spacy_extractor import SpacyExtractor
 from spacy.pipeline import EntityRuler
 
 
@@ -36,7 +34,6 @@ app = FastAPI(
 example_request = srsly.read_json("app/data/example_request.json")
 
 nlp = spacy.load("en_core_web_sm")
-extractor = SpacyExtractor(nlp)
 ruler = EntityRuler(nlp, overwrite_ents=True).from_disk("app/data/patterns.jsonl")
 
 
