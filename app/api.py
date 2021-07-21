@@ -10,7 +10,6 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 import spacy
 import srsly
-import uvicorn
 import pandas as pd
 
 from app.models import (
