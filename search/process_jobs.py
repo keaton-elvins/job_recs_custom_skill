@@ -12,10 +12,7 @@ def get_skills(tag=str):
     soup = BeautifulSoup(page.content, "html.parser")
     description = soup.find(id='jobDescriptionText')
 
-    try:
-        text_chunks = description.find_all(text=True)
-    except AttributeError:
-        return {}
+    text_chunks = description.find_all(text=True)
 
     text = " ".join(text_chunks).strip('\n')
     doc = ruler(nlp(text))
