@@ -11,6 +11,7 @@ from starlette.responses import RedirectResponse
 import spacy
 import srsly
 import uvicorn
+import pandas as pd
 
 from app.models import (
     ENT_PROP_MAP,
@@ -51,7 +52,33 @@ async def extract_skills(body: RecordsRequest = Body(..., example=example_reques
     raw_body = body.values[0].data.text
     doc = ruler(nlp(raw_body))
 
+    skills = set([ent.label_[6:] for ent in doc.ents if ent.label_.startswith("SKILL|")])
+    job_recs = []
+
+    df = pd.read_csv("search/Jobs.csv", encoding='cp1252')
+
+    for i in df.index:
+        score = 0
+        reqs = eval(df.at[i, "Skills"])
+        for s in reqs:
+            if s in skills:
+                score += 1
+            
+        if i < 10:
+            row = df.loc[i]
+            job_recs.append({"Name":row[0], "Link":row[1], "Score":score})
+            weakest = min(job_recs, key=lambda rec: rec["Score"])
+
+        elif score > weakest["Score"]:
+            job_recs.remove(weakest)
+            weakest = min(job_recs, key=lambda rec: rec["Score"])
+
+            row = df.loc[i]
+            job_recs.append({"Name":row[0], "Link":row[1], "Score":score})
+            
+    job_recs.reverse()
+
     res.update({"recordId": body.values[0].recordId})
-    res.update({"data": {"skills": [ent.label_[6:] for ent in doc.ents if ent.label_.startswith("SKILL|")]}})
+    res.update({"data": {"skills": job_recs}})
       
     return {"values": [res]}
