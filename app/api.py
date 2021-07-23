@@ -36,6 +36,15 @@ example_request = srsly.read_json("app/data/example_request.json")
 nlp = spacy.load("en_core_web_sm")
 ruler = EntityRuler(nlp, overwrite_ents=True).from_disk("app/data/patterns.jsonl")
 
+def get_score(skills, reqs):
+    """Given a list of job requirements, evaluate score based on user's skills"""
+    #TODO: improve scoring algorithm
+    score = 0
+    for s in reqs:
+            if s in skills:
+                score += 1
+
+    return score
 
 @app.get("/", include_in_schema=False)
 def docs_redirect():
@@ -56,12 +65,11 @@ async def find_recs(body: RecordsRequest = Body(..., example=example_request)):
 
     df = pd.read_csv("search/Jobs.csv", encoding='cp1252')
 
+    # find top 10 jobs with highest score
     for i in df.index:
         score = 0
         reqs = eval(df.at[i, "Skills"])
-        for s in reqs:
-            if s in skills:
-                score += 1
+        score = get_score(skills, reqs)
             
         if i < 10:
             row = df.loc[i]

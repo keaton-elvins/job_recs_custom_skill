@@ -5,7 +5,7 @@ from requests.api import get
 import spacy
 from spacy.pipeline import EntityRuler
 
-def get_skills(tag=str):
+def get_skills(tag):
     """Takes HTML tag from indeed website and returns extracted skills from job decription"""
 
     link = "https://www.indeed.com" + tag
