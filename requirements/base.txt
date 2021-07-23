@@ -70,7 +70,6 @@ prometheus-client==0.7.1
 prompt-toolkit==3.0.3
 PyAutoGUI==0.9.52
 pydantic==1.8.2
-pygame==1.9.6
 PyGetWindow==0.0.9
 Pygments==2.5.2
 pyinstaller==4.0

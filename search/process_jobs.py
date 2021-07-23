@@ -6,6 +6,8 @@ import spacy
 from spacy.pipeline import EntityRuler
 
 def get_skills(tag=str):
+    """Takes HTML tag from indeed website and returns extracted skills from job decription"""
+
     link = "https://www.indeed.com" + tag
     page = requests.get(link)
 
@@ -40,7 +42,7 @@ for i in range(0, 1000, 50):
 
     for result in job_results:
         link = result.get('href').strip()
-        
+
         if not link.startswith("/pagead"):
             skills = get_skills(link)
             if skills:

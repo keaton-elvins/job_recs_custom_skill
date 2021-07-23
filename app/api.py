@@ -42,9 +42,9 @@ def docs_redirect():
     return RedirectResponse(f"{prefix}/docs")
 
 
-@app.post("/skills", response_model=RecordsResponse, tags=["NER"])
-async def extract_skills(body: RecordsRequest = Body(..., example=example_request)):
-    """Extract Named Skills from a batch of Records."""
+@app.post("/recs", response_model=RecordsResponse, tags=["NER"])
+async def find_recs(body: RecordsRequest = Body(..., example=example_request)):
+    """Find job recs given skills extracted from body of text."""
     
     res = {}
 
