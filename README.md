@@ -12,15 +12,3 @@ This project has two key dependencies:
 | spaCy           | https://spacy.io             | Industrial-strength Natural Language Processing (NLP) with Python and Cython           |
 | FastAPI         | https://fastapi.tiangolo.com | FastAPI framework, high performance, easy to learn, fast to code, ready for production |
 ---
-
-## Run Locally
-To run locally in debug mode run:
-
-```
-cd ./job_recs_custom_skill
-uvicorn app.main:app --reload
-```
-Open your browser to http://localhost:8000/docs to view the OpenAPI UI.
-
----
-
