@@ -75,7 +75,7 @@ async def find_recs(body: RecordsRequest = Body(..., example=example_request)):
 
             weakest = min(job_recs, key=lambda rec: rec["Score"])
 
-    job_recs.reverse()
+    job_recs.sort(key=lambda rec: rec["Score"], reverse=True)
 
     res.update({"recordId": body.values[0].recordId})
     res.update({"data": {"skills": job_recs}})
